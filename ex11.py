@@ -1,5 +1,6 @@
 '''
-5. Implemente o TAD deque a partir de FilaArray visto em sala de aula.
+11. Escreva uma função add para inserir um elemento em uma posição específica no meio do deque. Discuta o desempenho da sua
+função.
 '''
 class DequeArray:
     def __init__(self, capacidade):
@@ -45,6 +46,24 @@ class DequeArray:
         self.tamanho -= 1
         return item
 
+    def add(self, item, pos):
+        """Adiciona um item em uma posição específica do deque."""
+        if pos < 0 or pos > self.tamanho:
+            raise IndexError("Posição inválida")
+
+        if self.tamanho == self.capacidade:
+            raise OverflowError("Deque está cheio")
+
+        # Move os elementos da posição especificada até o final para a direita
+        index = (self.inicio + pos) % self.capacidade
+        # Mover elementos à direita para liberar espaço
+        for i in range(self.tamanho, pos, -1):
+            self.fila[(self.inicio + i) % self.capacidade] = self.fila[(self.inicio + i - 1) % self.capacidade]
+
+        # Adiciona o novo item na posição desejada
+        self.fila[index] = item
+        self.tamanho += 1
+
     def empty(self):
         """Verifica se o deque está vazio."""
         return self.tamanho == 0
@@ -53,11 +72,22 @@ class DequeArray:
         """Retorna o número de elementos no deque."""
         return self.tamanho
 
+    def __str__(self):
+        """Representação do deque como string."""
+        items = []
+        for i in range(self.tamanho):
+            items.append(self.fila[(self.inicio + i) % self.capacidade])
+        return f"Deque: {items}"
+
 # Testando a implementação
 deque = DequeArray(5)
 deque.append(10)
 deque.append(20)
-deque.appendleft(5)
-print(deque.popleft())  # Output: 5
-print(deque.pop())      # Output: 20
-print(len(deque))       # Output: 1
+deque.append(30)
+print(deque)  # Deque: [10, 20, 30]
+
+deque.add(15, 1)  # Adiciona 15 na posição 1
+print(deque)  # Deque: [10, 15, 20, 30]
+
+deque.add(5, 0)  # Adiciona 5 na posição 0
+print(deque)  # Deque: [5, 10, 15, 20, 30]

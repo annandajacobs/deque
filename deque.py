@@ -4,7 +4,6 @@ class Node:
         self.previous = None
         self.next = None
 
-
 class Deque:
     def __init__(self):
         self._left = 0
@@ -61,7 +60,7 @@ class Deque:
     def peek_right(self):
         if self.is_empty():
             return "Deque vazio."
-        return self.right.data
+        return self._right.data
     
     def peek_left(self):
         if self.is_empty():

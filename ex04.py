@@ -1,60 +1,55 @@
-class DequeArray:
-    def __init__(self, capacidade):
-        self.capacidade = capacidade
-        self.fila = [None] * capacidade  # Array de tamanho fixo
-        self.inicio = 0
-        self.fim = 0
-        self.tamanho = 0
+'''
+4. Descreva como implementar um deque através da utilização de duas pilhas. Qual seria o tempo de execução dos métodos?
+'''
+class DequeWithStacks:
+    def __init__(self):
+        # Inicializa as pilhas
+        self.pilha_entrada = []  # Usada para adicionar no final
+        self.pilha_saida = []    # Usada para remover do início
 
     def append(self, item):
         """Adiciona um item no final do deque."""
-        if self.tamanho == self.capacidade:
-            raise OverflowError("Deque está cheio")
-        self.fila[self.fim] = item
-        self.fim = (self.fim + 1) % self.capacidade
-        self.tamanho += 1
+        self.pilha_entrada.append(item)
 
     def appendleft(self, item):
         """Adiciona um item no início do deque."""
-        if self.tamanho == self.capacidade:
-            raise OverflowError("Deque está cheio")
-        self.inicio = (self.inicio - 1) % self.capacidade
-        self.fila[self.inicio] = item
-        self.tamanho += 1
+        if not self.pilha_saida:
+            # Se a pilha de saída estiver vazia, movemos todos os elementos da pilha de entrada
+            while self.pilha_entrada:
+                self.pilha_saida.append(self.pilha_entrada.pop())
+        self.pilha_saida.append(item)
 
     def pop(self):
         """Remove e retorna o item do final do deque."""
-        if self.tamanho == 0:
-            raise IndexError("Deque está vazio")
-        self.fim = (self.fim - 1) % self.capacidade
-        item = self.fila[self.fim]
-        self.fila[self.fim] = None
-        self.tamanho -= 1
-        return item
+        if not self.pilha_entrada:
+            # Se a pilha de entrada estiver vazia, movemos todos os elementos da pilha de saída
+            while self.pilha_saida:
+                self.pilha_entrada.append(self.pilha_saida.pop())
+        if self.pilha_entrada:
+            return self.pilha_entrada.pop()
+        else:
+            raise IndexError("pop from an empty deque")
 
     def popleft(self):
         """Remove e retorna o item do início do deque."""
-        if self.tamanho == 0:
-            raise IndexError("Deque está vazio")
-        item = self.fila[self.inicio]
-        self.fila[self.inicio] = None
-        self.inicio = (self.inicio + 1) % self.capacidade
-        self.tamanho -= 1
-        return item
-
-    def empty(self):
-        """Verifica se o deque está vazio."""
-        return self.tamanho == 0
+        if not self.pilha_saida:
+            # Se a pilha de saída estiver vazia, movemos todos os elementos da pilha de entrada
+            while self.pilha_entrada:
+                self.pilha_saida.append(self.pilha_entrada.pop())
+        if self.pilha_saida:
+            return self.pilha_saida.pop()
+        else:
+            raise IndexError("popleft from an empty deque")
 
     def __len__(self):
         """Retorna o número de elementos no deque."""
-        return self.tamanho
+        return len(self.pilha_entrada) + len(self.pilha_saida)
 
 # Testando a implementação
-deque = DequeArray(5)
-deque.append(10)
-deque.append(20)
-deque.appendleft(5)
-print(deque.popleft())  # Output: 5
-print(deque.pop())      # Output: 20
-print(len(deque))       # Output: 1
+deque = DequeWithStacks()
+deque.append(1)
+deque.append(2)
+deque.appendleft(0)
+print(deque.popleft())  # Output: 0
+print(deque.pop())      # Output: 2
+print(deque.popleft())  # Output: 1

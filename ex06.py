@@ -1,3 +1,7 @@
+'''
+6. Escreva um programa que usa um Deque para verificar se uma string é um palíndromo. O programa pode ignorar espaços e
+pontuações.
+'''
 from collections import deque
 
 def is_palindrome(s):
