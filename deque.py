@@ -18,7 +18,7 @@ class Deque:
         else:
             self._left.previous = valor
             self.next = self._left
-            self._left = node
+            self._left = valor
         self._size += 1
 
     def push_right(self, elemento):
