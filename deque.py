@@ -11,13 +11,13 @@ class Deque:
         self._size = None
 
     def push_left(self, elemento):
-        node = Node(elemento)
+        valor = Node(elemento)
         if self._left is None:
-            self._left = node
-            self._right = node
+            self._left = valor
+            self._right = valor
         else:
             self._left.previous = node
-            node.next = self._left
+            self.next = self._left
             self._left = node
         self._size +=1
 
@@ -28,7 +28,7 @@ class Deque:
             self._right = node
             self._left = node
         else:
-            node.previous = self._right
+            self.previous = self._right
             self.right.next = node
             self.right = node
         self._size += 1
