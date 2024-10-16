@@ -17,7 +17,7 @@ class Deque:
             self._right = valor
         else:
             self._left.previous = valor
-            self.next = self._left
+            valor.next = self._left
             self._left = valor
         self._size += 1
 
@@ -28,7 +28,7 @@ class Deque:
             self._right = valor
             self._left = valor
         else:
-            self.previous = self._right
+            valor.previous = self._right
             self.right.next = valor
             self.right = valor
         self._size += 1
